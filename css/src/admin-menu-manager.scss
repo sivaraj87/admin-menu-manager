@@ -111,3 +111,42 @@
 #admin-menu-manager-edit.active + li #admin-menu-manager-trash {
 	display: block;
 }
+
+/**
+ * Menu Item Options
+ */
+
+.menu-top.amm-is-editing {
+	&:after {
+		right: 0;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+		border-width: 8px;
+		top: 10px;
+		z-index: 10000;
+		border-right-color: #32373c;
+	}
+
+	ul.wp-submenu {
+		display: none;
+	}
+}
+
+#adminmenu .amm-menu-item-options {
+	min-width: 200px !important;
+	padding: 10px;
+	color: #fff;
+	cursor: default !important;
+
+	&, * {
+		user-select: text !important
+	}
+
+	h4 {
+		margin-top: 0;
+	}
+}

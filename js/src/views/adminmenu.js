@@ -4,14 +4,15 @@ var EditButtonView = require('views/edit-button'),
 		MenuItemView = require('views/menu-item');
 
 var Menu = Backbone.Collection.extend({
-	model: MenuItem,
+	model: MenuItem
 });
 
 var AdminMenu = Backbone.View.extend(/** @lends AdminMenu.prototype */{
-	el       : '#adminmenuwrap',
-	tagName  : 'div',
-	className: 'amm-adminmenu-view',
-	isEditing: false,
+	el           : '#adminmenuwrap',
+	tagName      : 'div',
+	className    : 'amm-adminmenu-view',
+	isEditing    : false,
+	menuItemViews: [],
 
 	/**
 	 * Initialize the admin menu.
@@ -67,9 +68,15 @@ var AdminMenu = Backbone.View.extend(/** @lends AdminMenu.prototype */{
 
 		$adminMenu.empty();
 
+		// Remove existing views
+		_.each(this.menuItemViews, function (view) {
+			view.remove();
+		});
+
 		// Render all menu items
 		_.each(this.menu.models, function (item) {
 			var menuItemView = new MenuItemView({model: item});
+			this.menuItemViews.push(menuItemView);
 			$adminMenu.append(menuItemView.render().el);
 		}, this);
 
@@ -79,6 +86,7 @@ var AdminMenu = Backbone.View.extend(/** @lends AdminMenu.prototype */{
 		// Render all trashed menu items
 		_.each(this.trash.models, function (item) {
 			var menuItemView = new MenuItemView({model: item});
+			this.menuItemViews.push(menuItemView);
 			this.$el.find('#admin-menu-manager-trash').append(menuItemView.render().el);
 		}, this);
 
@@ -219,6 +227,9 @@ var AdminMenu = Backbone.View.extend(/** @lends AdminMenu.prototype */{
 	 */
 	toggleSortable: function (isActive) {
 		this.isEditing = isActive;
+		_.each(this.menuItemViews, function (view) {
+			view.isEditing = isActive;
+		});
 		this.initSortable(isActive);
 	},
 
